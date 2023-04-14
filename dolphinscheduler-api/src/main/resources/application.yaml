@@ -41,11 +41,16 @@ spring:
       max-request-size: 1024MB
   messages:
     basename: i18n/messages
+#  datasource:
+#    driver-class-name: org.postgresql.Driver
+#    url: jdbc:postgresql://127.0.0.1:5432/dolphinscheduler
+#    username: root
+#    password: root
   datasource:
-    driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://127.0.0.1:5432/dolphinscheduler
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3307/dolphinscheduler
     username: root
-    password: root
+    password: 123456
     hikari:
       connection-test-query: select 1
       minimum-idle: 5
@@ -76,7 +81,8 @@ spring:
       org.quartz.threadPool.threadCount: 25
       org.quartz.jobStore.misfireThreshold: 60000
       org.quartz.scheduler.makeSchedulerThreadDaemon: true
-      org.quartz.jobStore.driverDelegateClass: org.quartz.impl.jdbcjobstore.PostgreSQLDelegate
+#      org.quartz.jobStore.driverDelegateClass: org.quartz.impl.jdbcjobstore.PostgreSQLDelegate
+      org.quartz.jobStore.driverDelegateClass: org.quartz.impl.jdbcjobstore.StdJDBCDelegate
       org.quartz.jobStore.clusterCheckinInterval: 5000
 
 management:
