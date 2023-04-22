@@ -29,7 +29,7 @@ spring:
 #    password: root
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://124.221.168.241:3306/dolphinscheduler
+    url: jdbc:mysql://127.0.0.1:3307/dolphinscheduler
     username: root
     password: 123456
     hikari:
@@ -48,7 +48,7 @@ registry:
   type: zookeeper
   zookeeper:
     namespace: dolphinscheduler
-    connect-string: 124.221.168.241:2181
+    connect-string: localhost:2181
     retry-policy:
       base-sleep-time: 60ms
       max-sleep: 300ms
