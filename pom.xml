@@ -973,7 +973,8 @@
                                     <argument>buildx</argument>
                                     <argument>build</argument>
                                     <argument>--platform</argument>
-                                    <argument>linux/amd64,linux/arm64</argument>
+<!--                                    <argument>linux/amd64,linux/arm64</argument>-->
+                                    <argument>linux/x86_64</argument>
                                     <argument>--no-cache</argument>
                                     <argument>--push</argument>
                                     <argument>-t</argument>
