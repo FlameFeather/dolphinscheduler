@@ -24,7 +24,7 @@ source "$DOLPHINSCHEDULER_HOME/conf/dolphinscheduler_env.sh"
 chmod -R 700 ${DOLPHINSCHEDULER_HOME}/config
 export DOLPHINSCHEDULER_WORK_HOME=${DOLPHINSCHEDULER_HOME}
 
-JAVA_OPTS=${JAVA_OPTS:-"-server -Duser.timezone=${SPRING_JACKSON_TIME_ZONE} -Xms4g -Xmx4g -Xmn2g -XX:+PrintGCDetails -Xloggc:gc.log -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=dump.hprof"}
+JAVA_OPTS=${JAVA_OPTS:-"-server -Duser.timezone=${SPRING_JACKSON_TIME_ZONE} -Xms4g -Xmx4g -Xmn2g -XX:+PrintGCDetails -Xloggc:gc.log -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=dump.hprof agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=60091"}
 
 if [[ "$DOCKER" == "true" ]]; then
   JAVA_OPTS="${JAVA_OPTS} -XX:-UseContainerSupport"
