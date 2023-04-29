@@ -17,6 +17,7 @@
 
 package org.apache.dolphinscheduler.common.utils;
 
+import org.apache.dolphinscheduler.common.Constants;
 import org.apache.dolphinscheduler.common.shell.ShellExecutor;
 
 import org.apache.commons.lang.StringUtils;
@@ -31,11 +32,7 @@ import java.lang.management.OperatingSystemMXBean;
 import java.lang.management.RuntimeMXBean;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.StringTokenizer;
+import java.util.*;
 import java.util.regex.Pattern;
 
 import org.slf4j.Logger;
@@ -45,6 +42,7 @@ import oshi.SystemInfo;
 import oshi.hardware.CentralProcessor;
 import oshi.hardware.GlobalMemory;
 import oshi.hardware.HardwareAbstractionLayer;
+import oshi.hardware.NetworkIF;
 
 /**
  * os utils
@@ -90,6 +88,53 @@ public class OSUtils {
         DecimalFormat df = new DecimalFormat(TWO_DECIMAL);
         df.setRoundingMode(RoundingMode.HALF_UP);
         return Double.parseDouble(df.format(memoryUsage));
+    }
+
+    /**
+     * get network usage
+     * Keep 2 decimal
+     *
+     * @return percent %
+     */
+    public static Double networkUsage() {
+        List<NetworkIF> networkIFs1 = hal.getNetworkIFs();
+        Map<Integer, NetworkIF> networkIFMap1 = new HashMap<>();
+        for (NetworkIF networkIF : networkIFs1) {
+            int index = networkIF.getIndex();
+            networkIFMap1.put(index, networkIF);
+        }
+        try {
+            Thread.sleep(Constants.SLEEP_TIME_MILLIS);
+        }
+        catch (Exception ignored){
+        }
+        List<NetworkIF> networkIFs2 = hal.getNetworkIFs();
+        Map<Integer, NetworkIF> networkIFMap2 = new HashMap<>();
+        for (NetworkIF networkIF : networkIFs2) {
+            int index = networkIF.getIndex();
+            networkIFMap2.put(index, networkIF);
+        }
+        Double downloadSpeedTl = Double.parseDouble("0");
+        Double uploadSpeedTl = Double.parseDouble("0");
+        for (Integer index : networkIFMap2.keySet()) {
+            NetworkIF networkIF2 = networkIFMap2.get(index);
+            NetworkIF networkIF1 = networkIFMap1.get(index);
+            Long download = networkIF2.getBytesRecv() - networkIF1.getBytesRecv();
+            Long upload = networkIF2.getBytesSent() - networkIF1.getBytesSent();
+            Long time = networkIF2.getTimeStamp() - networkIF1.getTimeStamp();
+            Double downloadSpeed = download / (double) time;
+            Double uploadSpeed = upload / (double) time;
+            downloadSpeedTl += downloadSpeed;
+            uploadSpeedTl += uploadSpeed;
+        }
+        double v = (downloadSpeedTl + uploadSpeedTl) * 1000 / 1024 / 1024;
+        String bandwidth = System.getProperty("Bandwidth");
+        double networkUsage = v / Double.parseDouble(bandwidth);
+
+        DecimalFormat df = new DecimalFormat(TWO_DECIMAL);
+        df.setRoundingMode(RoundingMode.HALF_UP);
+        return Double.parseDouble(df.format(networkUsage));
+
     }
 
     /**

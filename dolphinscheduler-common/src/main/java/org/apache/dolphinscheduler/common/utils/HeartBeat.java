@@ -30,6 +30,7 @@ public class HeartBeat {
     private long startupTime;
     private long reportTime;
     private double cpuUsage;
+    private double networkUsage;
     private double memoryUsage;
     private double loadAverage;
     private double availablePhysicalMemorySize;
@@ -60,6 +61,10 @@ public class HeartBeat {
 
     public double getCpuUsage() {
         return cpuUsage;
+    }
+
+    public double getNetworkUsageUsage() {
+        return networkUsage;
     }
 
     public void setCpuUsage(double cpuUsage) {
@@ -178,6 +183,7 @@ public class HeartBeat {
         this.availablePhysicalMemorySize = OSUtils.availablePhysicalMemorySize();
         this.memoryUsage = OSUtils.memoryUsage();
         this.processId = OSUtils.getProcessID();
+        this.networkUsage = OSUtils.networkUsage();
     }
 
     /**
@@ -217,7 +223,8 @@ public class HeartBeat {
         builder.append(processId).append(COMMA);
         builder.append(workerHostWeight).append(COMMA);
         builder.append(workerExecThreadCount).append(COMMA);
-        builder.append(workerWaitingTaskCount);
+        builder.append(workerWaitingTaskCount).append(COMMA);
+        builder.append(networkUsage);
 
         return builder.toString();
     }
@@ -244,6 +251,7 @@ public class HeartBeat {
         heartBeat.workerHostWeight = Integer.parseInt(parts[10]);
         heartBeat.workerExecThreadCount = Integer.parseInt(parts[11]);
         heartBeat.workerWaitingTaskCount = Integer.parseInt(parts[12]);
+        heartBeat.networkUsage = Integer.parseInt(parts[13]);
         return heartBeat;
     }
 }

@@ -24,6 +24,8 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import static org.apache.dolphinscheduler.common.utils.OSUtils.networkUsage;
+
 
 /**
  * OSUtilsTest
@@ -37,6 +39,10 @@ public class OSUtilsTest {
         double memoryUsage = OSUtils.memoryUsage();
         logger.info("memoryUsage : {}", memoryUsage);
         Assert.assertTrue(memoryUsage >= 0.0);
+    }
+    @Test
+    public void net() throws InterruptedException {
+        System.out.println(networkUsage());
     }
 
     @Test

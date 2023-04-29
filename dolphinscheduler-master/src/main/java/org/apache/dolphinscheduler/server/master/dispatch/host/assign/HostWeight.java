@@ -29,6 +29,8 @@ public class HostWeight {
 
     private final int MEMORY_FACTOR = 20;
 
+    private final int NETWORK_FACTOR = 50;
+
     private final int LOAD_AVERAGE_FACTOR = 70;
 
     private final HostWorker hostWorker;
@@ -37,9 +39,9 @@ public class HostWeight {
 
     private double currentWeight;
 
-    public HostWeight(HostWorker hostWorker, double cpu, double memory, double loadAverage, long startTime) {
+    public HostWeight(HostWorker hostWorker, double cpu, double memory, double loadAverage, long startTime, Double network) {
         this.hostWorker = hostWorker;
-        this.weight = calculateWeight(cpu, memory, loadAverage, startTime);
+        this.weight = calculateWeight(cpu, memory, loadAverage, startTime, network);
         this.currentWeight = this.weight;
     }
 
@@ -72,8 +74,8 @@ public class HostWeight {
             + '}';
     }
 
-    private double calculateWeight(double cpu, double memory, double loadAverage, long startTime) {
-        double calculatedWeight = cpu * CPU_FACTOR + memory * MEMORY_FACTOR + loadAverage * LOAD_AVERAGE_FACTOR;
+    private double calculateWeight(double cpu, double memory, double loadAverage, long startTime, Double network) {
+        double calculatedWeight = cpu * CPU_FACTOR + memory * MEMORY_FACTOR + loadAverage * LOAD_AVERAGE_FACTOR + network * NETWORK_FACTOR;
         long uptime = System.currentTimeMillis() - startTime;
         if (uptime > 0 && uptime < Constants.WARM_UP_TIME) {
             // If the warm-up is not over, add the weight
