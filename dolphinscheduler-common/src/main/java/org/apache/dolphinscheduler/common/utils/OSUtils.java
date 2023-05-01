@@ -128,7 +128,7 @@ public class OSUtils {
             uploadSpeedTl += uploadSpeed;
         }
         double v = (downloadSpeedTl + uploadSpeedTl) * 1000 / 1024 / 1024;
-        String bandwidth = System.getProperty("Bandwidth");
+        String bandwidth = System.getenv("BANDWIDTH");
         double networkUsage = v / Double.parseDouble(bandwidth);
 
         DecimalFormat df = new DecimalFormat(TWO_DECIMAL);
