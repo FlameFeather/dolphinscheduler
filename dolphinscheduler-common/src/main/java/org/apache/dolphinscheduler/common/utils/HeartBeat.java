@@ -251,7 +251,7 @@ public class HeartBeat {
         heartBeat.workerHostWeight = Integer.parseInt(parts[10]);
         heartBeat.workerExecThreadCount = Integer.parseInt(parts[11]);
         heartBeat.workerWaitingTaskCount = Integer.parseInt(parts[12]);
-        heartBeat.networkUsage = Integer.parseInt(parts[13]);
+        heartBeat.networkUsage = Double.parseDouble(parts[13]);
         return heartBeat;
     }
 }
