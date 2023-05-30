@@ -104,7 +104,7 @@ public class OSUtils {
             networkIFMap1.put(index, networkIF);
         }
         try {
-            Thread.sleep(Constants.SLEEP_TIME_MILLIS);
+            Thread.sleep(Constants.SLEEP_TIME_MILLIS);//睡眠1秒
         }
         catch (Exception ignored){
         }
@@ -119,18 +119,27 @@ public class OSUtils {
         for (Integer index : networkIFMap2.keySet()) {
             NetworkIF networkIF2 = networkIFMap2.get(index);
             NetworkIF networkIF1 = networkIFMap1.get(index);
+            //计算下载的数据量
             Long download = networkIF2.getBytesRecv() - networkIF1.getBytesRecv();
+            //计算上传的数据量
             Long upload = networkIF2.getBytesSent() - networkIF1.getBytesSent();
+            //计算两次网络接口数据查询的时间差
             Long time = networkIF2.getTimeStamp() - networkIF1.getTimeStamp();
+            //根据时间差和下载的数据量计算下载速度
             Double downloadSpeed = download / (double) time;
+            //根据时间差和下载的数据量计算上传速度
             Double uploadSpeed = upload / (double) time;
+            //累加所有网络接口的速度
             downloadSpeedTl += downloadSpeed;
             uploadSpeedTl += uploadSpeed;
         }
         double v = (downloadSpeedTl + uploadSpeedTl) * 1000 / 1024 / 1024;
-        String bandwidth = System.getenv("BANDWIDTH");
+        //获取当前服务器的总网络带宽
+        String bandwidth = System.getProperty("BANDWIDTH");
+        //计算网络IO负载
         double networkUsage = v / Double.parseDouble(bandwidth);
 
+        //四舍五入至两位小数
         DecimalFormat df = new DecimalFormat(TWO_DECIMAL);
         df.setRoundingMode(RoundingMode.HALF_UP);
         return Double.parseDouble(df.format(networkUsage));

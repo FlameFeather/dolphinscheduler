@@ -75,6 +75,7 @@ public class HostWeight {
     }
 
     private double calculateWeight(double cpu, double memory, double loadAverage, long startTime, Double network) {
+        //计算增加网络IO负载
         double calculatedWeight = cpu * CPU_FACTOR + memory * MEMORY_FACTOR + loadAverage * LOAD_AVERAGE_FACTOR + network * NETWORK_FACTOR;
         long uptime = System.currentTimeMillis() - startTime;
         if (uptime > 0 && uptime < Constants.WARM_UP_TIME) {
